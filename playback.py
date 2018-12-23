@@ -1,33 +1,29 @@
-#1B make one or two
 from instrument import *
 
-# notelist = 'Db5 Ab4 B4 Db4 B3 Ab4 B4 Db4 B3 Ab4 B4'.split(' ') #notes or numbers
-# lengthlist = [.72, .36, .36, .72, .72, .36, .36, .72, .72, .72, .72] #in seconds
+# PyAudio quirky constant, 4 for stereo, 2 for mono
+PYAUDIO_CORR = 4
 
-# notelist = 'Db5 Ab4 B4 Db4 B3 Ab4 B4 Db4 B3 Ab4 B4'.split(' ') #notes or numbers
-# lengthlist = [.72, .36, .36, .72, .72, .36, .36, .72, .72, .72, .72] #in seconds
+# input for tones
+notelist = 'E4 r 440 r Db5'.split(' ') #notes or numbers
+lengthlist = [1] #in seconds=
+tremolofreq = [0, 0, 4, 0, 0] #in fq, repeating sequence
+vollist = [1000] #value of 1000 is appropriate, repeating sequence
+panlist = [0, 1, -1] #value of 0 for mono, -1 for left, 1 for right, repeating sequence
+samplelist = ['sounds/ct.wav']
 
-# notelist = 'Db5 Ab4 B4 Db4 B3 Ab4 B4 Db4 B3 Ab4 B4'.split(' ') #notes or numbers
-# lengthlist = [.72, .36, .36, .72, .72, .36, .36, .72, .72, .72, .72] #in seconds
-
-notelist = 'B4 r D4 r'.split(' ') #notes or numbers
-lengthlist = [.96] #in seconds
-
-tremlen = 1000
-tremolofreq = [1/tremlen] #in fq, repeating sequence
-vollist = [3] #value of 1 is appropriate, repeating sequence
-panlist = [-1, 1] #value of 0 for mono, -1 for left, 1 for right, repeating sequence
-
-wavname = 'sounds/voice.wav'
-sqwave = True
-
-# notelist = randnotes(notelist, conctimes = 40, lower = 3, upper = 5) #random generators
-# lengthlist = randnumlist(len(notelist), .06, .64)
-# vollist = randnumlist(len(notelist), 3,5)
-# tremolofreq = randnumlist(len(notelist), 1, 6)
-# panlist = randnumlist(len(notelist), -.5, .5)
-
-r = instrument(notelist, lengthlist, vollist, tremolofreq, panlist, wavname, sqwave)
+# construct instrument
+tonelist = []
+for i in range(len(notelist)):
+  note = notelist[i%len(notelist)]
+  note_freq = notetofreq[note] if not note.isdigit() else note
+  note_freq = float(note_freq)
+  tonelist.append({'note_freq' : note_freq,
+                   'length' : lengthlist[i%len(lengthlist)] * PYAUDIO_CORR,
+                   'tremolo' : tremolofreq[i%len(tremolofreq)],
+                   'volume' : vollist[i%len(vollist)],
+                   'pan' : panlist[i%len(panlist)],
+                   'sample' : samplelist[i%len(samplelist)]})
+r = instrument(tonelist)
 
 # voice.wav has really grainy unsquared, really clean squared up to 6th octave
 # dm.wav unsquared is too rough, pretty saw squared
