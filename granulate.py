@@ -4,19 +4,11 @@ import random
 import numpy as np
 from scipy.io import wavfile
 
-def pitchcorrect(smallsample, fractindex):
-	if random.random() > fractindex:
-		return smallsample[:-1] #temp
-	else:
-		return smallsample
-		
-def sqwave(sample):
-	return np.array((sample > 0), dtype=bool)
+# constants
+VIB_PATCH = 4. # adjusts for length of fullsample
 
 def tremolo(sample, freq):
-	length = (44100 / freq) / 2
-
-	x = np.linspace(3 * np.pi / 2, 7 * np.pi / 2, length)
+	x = np.linspace(3 * np.pi / 2, 7 * np.pi / 2, (44100 / freq))
 	sine = np.sin(x)
 	sine += 1
 	sine *= .5
@@ -28,10 +20,9 @@ def tremolo(sample, freq):
 	sine_2d = np.concatenate((sine,sine), axis=1)
 	return np.array(sample * sine_2d, dtype=np.int16)
 
-def pan(sample, pan):
-	panleft = 1 - pan
-	panright = 1 + pan
-	return sample * [panleft, panright]
+# round i to the nearest multiple of rnd (below)
+def roundN(i, rnd):
+	return i-(i%rnd)
 
 def granulate(tone):
 	# fill a rest as 0s
@@ -41,25 +32,42 @@ def granulate(tone):
 		return np.concatenate((fullsample,fullsample), axis=1)
 	
 	# prepare data
-	wf = wave.open(tone['sample'], 'rb') 
 	sr, dat = wavfile.read(tone['sample'])
 	samplelength = sr / tone['note_freq']
 	smallsample = dat[:(int(samplelength)) + 1] 
 	fractindex = samplelength - int(samplelength) # used to correct for non-integral frequency
 	
-	# convert to squarewave
-	if True: 
-		smallsample = sqwave(smallsample)
+	# threshold cast to squarewave
+	smallsample = np.array((smallsample > 0), dtype = bool)
 
-	# amplify and pan
+	# amplify
 	smallsample = smallsample * tone['volume'] 
-	smallsample = pan(smallsample, tone['pan'])
+
+	# pan
+	smallsample *= [1-tone['pan'], 1+tone['pan']]
 	
-	# construct the full sample, correcting for pitch
-	fullsample = smallsample.tolist() 
+	# construct the full sample, allowing floating point frequencies via random sampling
+	i = 0
+	j = 0
+	fullsample = []
 	smallsample = smallsample.tolist()
+	tnf = tone['note_freq']
 	while len(fullsample) < sr * tone['length']:
-		fullsample += pitchcorrect(smallsample, fractindex)
+		# vibrato (consider "ramping up," like the cool chiptune stuff or a violin)
+		# if len(fullsample) >= sr * tone['length'] / (2. * VIB_PATCH): # when to begin vib
+		if(tone['vib'] != 0): 
+			if i%int(tnf / tone['vib']) == 0: # speed (user-adjustable * fq-dependent)
+				if (j+1)%4 < 2: # depth (user-adjustable * fq-dependent)
+					smallsample += [[0,0]]
+				else:
+					del smallsample[-1]
+				j += 1
+			i += 1
+
+		# concatenate
+		ind = -1 if random.random() > fractindex else len(smallsample)
+		fullsample += smallsample[:ind]
+		
 	fullsample = fullsample[0:int(sr * tone['length'])]
 	fullsample = np.array(fullsample, dtype = np.int16)
 
