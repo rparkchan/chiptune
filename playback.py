@@ -14,8 +14,8 @@ PYAUDIO_CORR = 4
 # input for tones
 notelist = '440 r E5 Db4'.split(' ') # notes or numbers
 lengthlist = [1.28] # in seconds
-tremolofreq = [0, 0, 0, 0, 0] # in fq, repeating sequence
-viblist = [50, 0, 25, 0] # 25 is appropriate
+tremolofreq = [10, 0, 4, 0, 0] # in fq, repeating sequence
+viblist = [0] # 25 is appropriate
 vollist = [1000] # 1000 is appropriate, repeating sequence
 panlist = [0, 0, -1, 1] # 0 for mono, -1 for left, 1 for right, repeating sequence
 samplelist = ['sounds/voice.wav']

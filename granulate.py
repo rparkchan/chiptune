@@ -9,20 +9,12 @@ VIB_PATCH = 4. # adjusts for length of fullsample
 
 def tremolo(sample, freq):
 	x = np.linspace(3 * np.pi / 2, 7 * np.pi / 2, (44100 / freq))
-	sine = np.sin(x)
-	sine += 1
-	sine *= .5
-	sine = sine.tolist()
-
+	sine = ((np.sin(x) + 1) * .5).tolist()
 	while len(sine) < len(sample):
 		sine += sine
 	sine = np.array(sine[0:len(sample)]).reshape(-1,1)
 	sine_2d = np.concatenate((sine,sine), axis=1)
 	return np.array(sample * sine_2d, dtype=np.int16)
-
-# round i to the nearest multiple of rnd (below)
-def roundN(i, rnd):
-	return i-(i%rnd)
 
 def granulate(tone):
 	# fill a rest as 0s

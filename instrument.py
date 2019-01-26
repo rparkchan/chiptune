@@ -1,6 +1,6 @@
 from granulate import *
 
-# an instrument instance holds a tonelist: np array of 1s and 0s to be read through 
+# an instrument instance holds a stream and granlist
 class instrument:
 	def __init__(self, tonelist):
 		p = pyaudio.PyAudio()
