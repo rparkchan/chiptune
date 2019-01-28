@@ -1,2 +1,2 @@
-# chiptune
-messy collection of scripts to make squarewave music
+## chiptune
+Generate squarewave music from granulated samples
