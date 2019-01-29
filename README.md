@@ -1,14 +1,14 @@
 ## chiptune
 Generate squarewave music from granulated samples. Input is entirely located in `playback.py` lists: run `python playback.py` at command line, then hit Enter to begin playback. 
 
-Input options: 
+### Options
 1. Pitch (as note+octave, i.e. `A4`, or frequency, i.e. `440`)
 2. Length (in seconds)
 3. Tremolo (in frequency of amplitude cycle)
 4. Vibrato (in frequency of updating sample length)
 5. Volume (`1000` is appropriate)
 6. Pan (`-1` for hard left, `1` for hard right)
-7. Sample (in file path)
+7. Sample (as file path)
 
 ### Examples
 <div style="display:flex; align-items:center">
