@@ -11,11 +11,11 @@ Input options:
 7. Sample (in file path)
 
 ### Examples
-<div>
-  <img width=16px src="https://cdn2.iconfinder.com/data/icons/minimalism/512/soundcloud.png"/>
+<div style="display:flex; align-items:center">
+  <img width=16px src="http://icons.iconarchive.com/icons/danleech/simple/256/soundcloud-icon.png"/>
   <a href= https://soundcloud.com/ryan-park-chan/chip-clip-band-1>Chip Clip Band 1</a>
 </div>
-<div>
+<div style="display:flex; align-items:center">
   <img width=16px src="https://cdn2.iconfinder.com/data/icons/minimalism/512/soundcloud.png"/>
   <a href= https://soundcloud.com/ryan-park-chan/chip-clip-band-2>Chip Clip Band 2</a>
 </div>
