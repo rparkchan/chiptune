@@ -11,8 +11,10 @@ Input options:
 7. Sample (in file path)
 
 ### Examples
+<img width=16px src="https://cdn2.iconfinder.com/data/icons/minimalism/512/soundcloud.png"/>
 [Chip Clip Band 1](https://soundcloud.com/ryan-park-chan/chip-clip-band-1)
 
+<img width=16px src="https://cdn2.iconfinder.com/data/icons/minimalism/512/soundcloud.png"/>
 [Chip Clip Band 2](https://soundcloud.com/ryan-park-chan/chip-clip-band-2)
 
 
